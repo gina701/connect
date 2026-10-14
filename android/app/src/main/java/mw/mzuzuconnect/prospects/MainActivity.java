@@ -20,6 +20,7 @@ import android.widget.Toast;
 public final class MainActivity extends Activity {
     private static final String PREFS = "mzuzu_connect_app";
     private static final String SERVER_URL = "server_url";
+    private static final String DEFAULT_SERVER_URL = "https://connect-zj8v.onrender.com";
     private static final int GREEN = Color.rgb(21, 120, 95);
 
     private EditText serverField;
@@ -33,7 +34,7 @@ public final class MainActivity extends Activity {
         getWindow().setStatusBarColor(GREEN);
         getWindow().setNavigationBarColor(Color.rgb(18, 59, 52));
         setContentView(createLayout());
-        serverField.setText(getPreferences(MODE_PRIVATE).getString(SERVER_URL, ""));
+        serverField.setText(getPreferences(MODE_PRIVATE).getString(SERVER_URL, DEFAULT_SERVER_URL));
         serverField.setOnEditorActionListener((view, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 connectToServer();

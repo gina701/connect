@@ -2,6 +2,32 @@ let adminPassword = "";
 let cachedLeads = [];
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let deferredInstallPrompt = null;
+const installAppButton = $("installAppBtn");
+if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
+  installAppButton.classList.add("hidden");
+}
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  installAppButton.classList.remove("hidden");
+});
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  installAppButton.classList.add("hidden");
+});
+installAppButton.addEventListener("click", async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  installAppButton.classList.add("hidden");
+});
+if ("serviceWorker" in navigator && window.location.protocol === "https:") {
+  navigator.serviceWorker.register("/sw.js").catch(error => {
+    console.error("Could not register the app service worker:", error);
+  });
+}
 async function api(url, options = {}) {
   const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
   if (adminPassword) headers["x-admin-password"] = adminPassword;

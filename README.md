@@ -60,12 +60,17 @@ Configure SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, EMAIL_FROM. Provider-s
 Sending is still blocked unless the business has genuinely opted in to WhatsApp messages, the permission source is recorded, and the business has not opted out. Finding a business or seeing its public phone number is not permission to message it. Follow Meta's current WhatsApp policies and applicable local laws.
 
 ## Render deployment
-This repository includes a `render.yaml` Blueprint for a **free demo** service. Push the project to a GitHub repository, then create a Blueprint in the Render dashboard and select that repository. Render generates an `ADMIN_PASSWORD`; retrieve it from the service's environment settings and share it privately with the demo team.
+This repository includes a `render.yaml` Blueprint for a **free demo** service. Connect the GitHub repository in the Render dashboard to deploy. In Render, open the service's **Environment** settings and set `ADMIN_PASSWORD` to a strong, unique value; save and redeploy if prompted. Never use the example/local password for the hosted app. Share the hosted password with the demo team privately.
 
 **Free demo warning:** free Render services can sleep when idle, and their local filesystem is temporary. This app stores prospects in local JSON files, so demo data can disappear after a restart, sleep, or redeploy. Do not use the free demo for important client data. The same shared password is used by all demo team members; it does not provide per-person accounts or an audit trail identifying each teammate.
 
+### Install from Chrome
+The site is also an installable web app (PWA). After the updated files have been deployed over HTTPS, open the Render URL in Chrome on Android, sign in if needed, then use Chrome's menu and choose **Install app**. Chrome may also show an in-page **Install app** button when it offers the install prompt. On a computer, use the install icon in Chrome's address bar or Chrome's **Install page as app** menu item. If the install option is not available, confirm the latest deployment is live and reload the site in Chrome.
+
+The install opens the hosted app in its own app window; it is not an APK and still needs internet access to sign in and use shared data. The service worker caches only the public app shell for an offline fallback; it never caches API responses or prospect data.
+
 ### Android app
-The `android` folder contains a WebView app project for the hosted dashboard. Install Android Studio, open the `android` folder, and build a debug APK. After Render finishes deploying, open the app on the phone, enter the service's HTTPS URL (for example, `https://your-service.onrender.com`), and sign in with the shared demo password. The app saves that URL on each phone. Distribute the generated `android/app/build/outputs/apk/debug/app-debug.apk` privately to teammates; Android may ask them to allow installation from that source.
+The `android` folder contains a WebView app project for the hosted dashboard. Install Android Studio, open the `android` folder, wait for Gradle sync, then choose **Build > Build Bundle(s) / APK(s) > Build APK(s)**. The app opens `https://connect-zj8v.onrender.com` by default; teammates can edit the server URL in the app if it changes. Sign in using the hosted `ADMIN_PASSWORD`. Distribute the generated `android/app/build/outputs/apk/debug/app-debug.apk` privately to teammates; Android may ask them to allow installation from that source.
 
 An APK does not host the server itself: every phone needs internet access to reach the Render service. Never put the admin password or WhatsApp token in the APK source or inside the APK. For reliable shared prospect data and individual team logins, migrate to persistent database storage and proper user accounts before using this with real client records.
 

@@ -12,6 +12,7 @@ body{background:radial-gradient(ellipse at 90% 0%,#e4f1e9 0,transparent 34%),#f3
 .brand-mark{background:linear-gradient(145deg,#19876c,#125c4b);border-radius:13px;box-shadow:0 5px 12px #145c4b24}
 .topbar-link{margin-left:auto;color:var(--blue);font-size:13px;font-weight:700;text-decoration:none}
 .topbar-link:hover{text-decoration:underline}.topbar #logoutBtn{margin-left:0}
+.install-app-button{padding:8px 12px;font-size:12px;white-space:nowrap}
 main{max-width:1160px;margin:38px auto 60px}
 .page-heading{align-items:flex-end;margin-bottom:22px}.page-heading h1{font-size:clamp(29px,4vw,40px);max-width:650px;line-height:1.12;letter-spacing:-1.4px;color:var(--navy)}.page-heading .muted{max-width:630px;margin-top:10px}
 .eyebrow{color:#17775e}
@@ -40,4 +41,4 @@ main{max-width:1160px;margin:38px auto 60px}
 .activity-item{border-color:#edf1ee}
 .contact-dialog{border-color:var(--line);border-radius:18px}.contact-dialog h2{color:var(--navy)}.contact-guidance{background:#f1f6f3}.contact-guidance h3{color:var(--navy)}
 .opportunity-line{color:#245d4c;background:#edf5f0;border:1px solid #e0eee5;border-radius:9px}
-@media(max-width:760px){main{margin:24px auto 40px}.topbar{padding:11px 12px;gap:9px}.topbar-link{font-size:11px}.topbar small{font-size:10px}.workflow-strip{grid-template-columns:1fr;gap:8px}.workflow-strip article{padding:11px 13px}.page-heading h1{font-size:31px}.stats{gap:8px}.stat{padding:12px}.stat small{font-size:9px}.panel{padding:15px}.panel-heading{gap:8px}.discovery-card{padding:13px}.lead-actions{min-width:0}.lead-actions .button{font-size:10px}.toolbar{padding:8px}}
+@media(max-width:760px){main{margin:24px auto 40px}.topbar{padding:11px 12px;gap:9px}.topbar-link{font-size:11px}.topbar small{font-size:10px}.install-app-button{padding:7px 9px;font-size:10px}.workflow-strip{grid-template-columns:1fr;gap:8px}.workflow-strip article{padding:11px 13px}.page-heading h1{font-size:31px}.stats{gap:8px}.stat{padding:12px}.stat small{font-size:9px}.panel{padding:15px}.panel-heading{gap:8px}.discovery-card{padding:13px}.lead-actions{min-width:0}.lead-actions .button{font-size:10px}.toolbar{padding:8px}}
