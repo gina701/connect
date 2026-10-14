@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mzuzu Connect | Client Acquisition</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">MC</div>
+    <div><strong>Mzuzu Connect</strong><small>Prospect workspace · Mzuzu, Malawi</small></div>
+    <a class="topbar-link" href="https://mzuzuconnect.netlify.app" target="_blank" rel="noopener noreferrer">Our services ↗</a>
+    <button id="logoutBtn" class="button ghost hidden">Log out</button>
+  </header>
+  <main>
+    <section id="loginPanel" class="login-card">
+      <div class="eyebrow">PRIVATE WORKSPACE</div>
+      <h1>Find your next client.</h1>
+      <p class="muted">Manage leads, personalize outreach and track business opportunities in Mzuzu.</p>
+      <form id="loginForm">
+        <label for="password">Admin password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <button class="button primary" type="submit">Open dashboard</button>
+        <p id="loginError" class="error"></p>
+      </form>
+    </section>
+
+    <section id="appPanel" class="hidden">
+      <div class="page-heading">
+        <div><div class="eyebrow">LOCAL BUSINESS PROSPECTING</div><h1>Find the right businesses to help.</h1><p class="muted">Discover Mzuzu businesses, spot a possible digital need, then choose a respectful next step.</p></div>
+        <button id="newLeadBtn" class="button primary">+ Add lead</button>
+      </div>
+      <section class="workflow-strip" aria-label="Prospecting workflow">
+        <article><span class="workflow-number">01</span><div><strong>Discover</strong><p>Find public business listings</p></div></article>
+        <article><span class="workflow-number">02</span><div><strong>Review</strong><p>Check the details and possible fit</p></div></article>
+        <article><span class="workflow-number">03</span><div><strong>Plan a conversation</strong><p>Use the guide; send only with permission</p></div></article>
+      </section>
+      <div class="stats">
+        <article class="stat"><span>Prospects saved</span><strong id="totalStat">0</strong><small>In your workspace</small></article>
+        <article class="stat"><span>Contact permission</span><strong id="permissionStat">0</strong><small>Permission and source recorded</small></article>
+        <article class="stat"><span>In conversation</span><strong id="interestedStat">0</strong><small>Interested or quoted</small></article>
+        <article class="stat"><span>Clients won</span><strong id="wonStat">0</strong><small>Marked as won</small></article>
+      </div>
+      <div class="toolbar">
+        <input id="searchInput" placeholder="Search business, category or service…" aria-label="Search leads">
+        <select id="stageFilter" aria-label="Filter by stage">
+          <option value="">All stages</option><option>New</option><option>Qualified</option><option>Contacted</option><option>Interested</option><option>Quoted</option><option>Won</option><option>Lost</option><option>Do not contact</option>
+        </select>
+        <a class="button secondary" href="/api/export.csv" id="exportBtn">Export CSV</a>
+      </div>
+
+      <section class="notice"><strong>Respectful outreach:</strong> a public listing is not permission to market. Review each prospect, ask whether they’re open to hearing from you, and record genuine permission before sending. <span id="whatsappSetupStatus">Checking WhatsApp setup…</span></section>
+
+      <section class="panel">
+        <div class="panel-heading"><div><div class="eyebrow">STEP 1 · DISCOVER</div><h2>Find businesses in Mzuzu</h2><p class="muted small">Search public OpenStreetMap listings for possible clients. The list is a starting point, not a verified recommendation.</p></div><span class="pill">Free · No API key</span></div>
+        <form id="discoveryForm" class="discovery-form">
+          <label>Business type
+            <select id="discoveryCategory">
+              <option value="all">All business types</option>
+              <option value="food">Food &amp; drink</option>
+              <option value="retail">Shops &amp; retail</option>
+              <option value="services">Services &amp; offices</option>
+              <option value="accommodation">Accommodation</option>
+            </select>
+          </label>
+          <button id="discoveryButton" class="button primary" type="submit">Search businesses</button>
+        </form>
+        <p id="discoveryStatus" class="muted small" role="status">Searches within about 10 km of Mzuzu. Choose a business type to get started.</p>
+        <div id="discoveryResults" class="discovery-results"></div>
+        <p class="muted small">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>.</p>
+      </section>
+
+      <section id="leadFormPanel" class="panel hidden">
+        <div class="panel-heading"><h2 id="formTitle">Add a business lead</h2><button id="cancelFormBtn" class="button ghost">Cancel</button></div>
+        <form id="leadForm" class="lead-form">
+          <input type="hidden" id="leadId">
+          <label>Business name *<input id="businessName" required maxlength="150"></label>
+          <label>Category<select id="category"><option>Restaurant</option><option>Retail shop</option><option>Salon / beauty</option><option>Lodge / guest house</option><option>Furniture business</option><option>Pharmacy</option><option>Other</option></select></label>
+          <label>Area<input id="area" value="Mzuzu" required></label>
+          <label>Phone (international format recommended)<input id="phone" placeholder="265..." inputmode="tel"></label>
+          <label>Business email<input id="email" type="email" placeholder="business@example.com"></label>
+          <label>Website URL<input id="website" type="url" placeholder="https://..."></label>
+          <label>Recommended service<select id="service"><option>Website Development</option><option>Website development</option><option>E-commerce Solutions</option><option>E-commerce / restaurant ordering system</option><option>Digital Marketing &amp; SEO</option><option>Software Systems</option><option>Business management system</option><option>IT Support &amp; Cybersecurity</option><option>Computer Networking</option><option>Data Analysis</option></select></label>
+          <label>Lead stage<select id="stage"><option>New</option><option>Qualified</option><option>Contacted</option><option>Interested</option><option>Quoted</option><option>Won</option><option>Lost</option><option>Do not contact</option></select></label>
+          <label class="check-label"><input id="contactPermission" type="checkbox"> I have permission to contact this business for marketing</label>
+          <label>Permission source / date<input id="permissionSource" placeholder="e.g. requested a quote on 13 Oct 2026"></label>
+          <label>Follow-up date<input id="followUpDate" type="date"></label>
+          <label class="full">Notes<textarea id="notes" rows="3" placeholder="Website opportunity, requested features, conversation notes…"></textarea></label>
+          <p class="full muted small">Only tick permission when it is genuine and appropriate for the channel. Save evidence/source in the field above. A public listing is not permission to contact.</p>
+          <div class="full form-actions"><button class="button primary" type="submit">Save lead</button></div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading"><div><div class="eyebrow">STEP 2 · YOUR SHORTLIST</div><h2>Saved prospects</h2><p class="muted small">Review possible fit, verify details, and use a contact guide to plan your approach.</p></div><span id="leadCount" class="pill">0 leads</span></div>
+        <div id="leadList" class="lead-list"></div>
+        <div id="emptyState" class="empty-state"><div class="empty-icon">↗</div><h3>Your first lead starts here</h3><p>Add a business you have permission to research and manage.</p><button class="button primary" id="emptyAddBtn">Add your first lead</button></div>
+      </section>
+      <section class="panel"><div class="panel-heading"><h2>Recent activity</h2></div><div id="activityList" class="activity-list"></div></section>
+      <p id="appMessage" role="status" class="status-message"></p>
+    </section>
+  </main>
+
+  <template id="leadTemplate">
+    <article class="lead-card">
+      <div class="lead-main">
+        <div class="lead-title-row"><h3 class="lead-name"></h3><span class="stage-badge"></span></div>
+        <p class="lead-meta"></p>
+        <div class="lead-details"></div>
+        <p class="lead-notes"></p>
+        <p class="opportunity-line"></p>
+        <p class="permission-line"></p>
+      </div>
+      <div class="lead-actions">
+        <button class="button small secondary edit-btn">Edit</button>
+        <button class="button small secondary email-btn">Send email</button>
+        <button class="button small secondary whatsapp-btn">Send WhatsApp</button>
+        <button class="button small secondary contact-guide-btn">Contact guide &amp; draft</button>
+        <button class="button small danger optout-btn">Do not contact</button>
+        <button class="button small ghost delete-btn">Delete</button>
+      </div>
+    </article>
+  </template>
+  <dialog id="contactGuideDialog" class="contact-dialog">
+    <div class="panel-heading"><div><div class="eyebrow">PROSPECT PLAYBOOK</div><h2 id="contactLeadName"></h2></div><button id="closeContactGuideBtn" class="button ghost" type="button">Close</button></div>
+    <p id="contactRecommendation" class="muted"></p>
+    <div id="contactDetails" class="contact-details"></div>
+    <section class="contact-guidance">
+      <h3>Suggested next steps</h3>
+      <ol>
+        <li>Check the business website and public listing yourself; directory information may be incomplete or out of date.</li>
+        <li>Use an official business contact route or visit during business hours. Ask who handles the relevant service and whether they are open to receiving details.</li>
+        <li>Do not treat a public phone number as consent. Use WhatsApp marketing only after the business has opted in and the approved WhatsApp template is appropriate.</li>
+        <li>Personalize the draft below, follow applicable rules, and stop if they decline or opt out.</li>
+      </ol>
+    </section>
+    <label for="contactDraftChannel">Draft type</label>
+    <select id="contactDraftChannel">
+      <option value="email">Email — use an official public business address</option>
+      <option value="conversation">Phone or in-person conversation</option>
+      <option value="whatsapp">WhatsApp — only after they opted in</option>
+    </select>
+    <label for="contactDraft">Editable draft</label>
+    <textarea id="contactDraft" rows="8"></textarea>
+    <div class="draft-actions"><button id="copyContactDraftBtn" class="button primary" type="button">Copy draft</button><span id="copyDraftStatus" class="muted small" role="status"></span></div>
+  </dialog>
+  <script src="/app.js" defer></script>
+</body>
+</html>
